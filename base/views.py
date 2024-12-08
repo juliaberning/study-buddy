@@ -5,7 +5,6 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
-from django.contrib.auth.models import User
 
 from base.forms import RoomForm
 from .models import Room, Topic
@@ -22,11 +21,6 @@ def loginPage(request):
     if request.method == 'POST':
         username = request.POST.get('username').lower()
         password = request.POST.get('password')
-
-        try: 
-            user = User.objects.get(username=username)
-        except:
-            messages.error(request, 'User does not exist')
 
         user = authenticate(request, username=username, password=password)
 
