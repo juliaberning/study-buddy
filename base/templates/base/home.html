@@ -13,16 +13,9 @@
 <div class="home-container">
 
     <div>
-        <h3>Browse topics</h3>
-        <hr>
-        <div>
-            <a href="{% url 'home' %}">All</a>
-        </div> 
-        {% for topic in topics %}
-        <div>
-            <a href="{% url 'home' %}?q={{topic.name}}">{{ topic.name }}</a>
-        </div>  
-        {% endfor %}
+        <!-- The modularity of components is possible because the included components 
+        rely on variables (topics, room_count etc.)that are passed in the context.-->
+        {% include 'base/topics_component.html' %}
     </div>
     
     <div>
@@ -37,44 +30,14 @@
         </h5>
         <a href="{% url 'create-room' %}">Create Room</a>
 
-        <div>
-            {% for room in rooms %}
-            <div>
-                {% if room.host == request.user %}
-                <a href="{% url 'update-room' room.id %}">Edit</a>
-                <a href="{% url 'delete-room' room.id %}">Delete</a>
-                {% endif %}
-                <span>@{{room.host.username}}</span>
-                <h5>{{room.id}} -- <a href="{% url 'room' room.id %}">{{ room.name }}</a></h5>
-                <small>{{room.topic.name}}</small>
-                <hr>
-            </div>
-            {% endfor %}
-        </div>
+        {% include 'base/feed_component.html' %}
+
     </div>
 
     <div>
-        <h3>Recent Activity</h3>
-        <hr>
-        {% for message in room_messages %}
-        <div>
-            <small>
-                @{{message.user}} {{message.created|timesince}} ago
-            </small>
-            <small> replied to "{{message.room}}"</small>
-            <!-- this would output the whole message -->
-            <!-- <p>{{message.body}}</p>  -->
-
-            <!-- this outputs the string representation of the message -->
-            <p>{{message}}</p> 
-            {% if request.user == message.user %}
-                <a href="{% url 'delete-message' message.id %}">Delete</a>
-                <a href="{% url 'update-message' message.id %}">Edit</a>
-            {% endif %}
-        </div>
-
-        {% endfor %}
+        {% include 'base/activity_component.html' %}
     </div>
+
 </div>
     
 {% endblock content %}

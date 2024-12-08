@@ -67,6 +67,7 @@ def home(request):
     room_count = rooms.count()
     room_messages = Message.objects.all().filter(Q(room__topic__name__icontains=q)) # activity feed can be filtered according to the topic
 
+    # The keys of the context dictionary are the names of the variables that will be available in the template
     context = {"rooms": rooms, "topics": topics, "room_count": room_count, "room_messages": room_messages}
     return render(request, 'base/home.html', context)
 
