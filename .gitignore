@@ -12,3 +12,6 @@ __pycache__/
 .env
 *.dot
 *.png
+
+# Ignore VSCode files
+.vscode/
