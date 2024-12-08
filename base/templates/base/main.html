@@ -1,11 +1,12 @@
 <!DOCTYPE html>
+{% load static %}
 <html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Study Bud</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    {% comment %} <link rel="stylesheet" type="text/css" media="screen" href="main.css"> {% endcomment %}
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'styles/main.css' %}">
 </head>
 <body>
     {% include "base/navbar.html" %}
@@ -13,11 +14,12 @@
     {% if messages %}
     <ul class="messages">
         {% for message in messages %}
-        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
         {% endfor %}
     </ul>
-{% endif %}
+    {% endif %}
 
+    <img src="{% static 'images/quote.png' %}" alt="Quote" height="100px">
     {% block content %}
 
     {% endblock %}
