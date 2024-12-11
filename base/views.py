@@ -3,10 +3,8 @@ from django.shortcuts import render, redirect
 from django.db.models import Q
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
-
-from base.forms import MessageForm, RoomForm, UserForm
+from base.forms import MessageForm, RoomForm, UserForm, MyUserCreationForm
 from .models import Message, Room, Topic, User
 
 
@@ -19,10 +17,10 @@ def loginPage(request):
         return redirect('home')
     
     if request.method == 'POST':
-        username = request.POST.get('username').lower()
+        email = request.POST.get('email').lower()
         password = request.POST.get('password')
 
-        user = authenticate(request, username=username, password=password)
+        user = authenticate(request, email=email, password=password)
 
         if user is not None:
             login(request, user) # this will create a session and store it in the database
@@ -41,19 +39,21 @@ def logoutUser(request):
 
 def registerPage(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = MyUserCreationForm(request.POST)
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password1')
-            user = authenticate(username=username, password=password)
+            email = form.cleaned_data.get('email')
+
+            user = authenticate(request, email=email, password=password)
             messages.success(request, f'Account created for {username}!')
             login(request, user)
             return redirect('home')
         else: 
             messages.error(request, 'An error has occurred during registration')
     else:
-        form = UserCreationForm()
+        form = MyUserCreationForm()
     return render(request, 'base/login_register.html', {'form': form})
 
 def home(request):
