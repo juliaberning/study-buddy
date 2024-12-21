@@ -1,6 +1,6 @@
-# Django Feedback App
+# Django Study App
 
-This Django project provides study rooms as a place of discussions for users.
+This Django project provides study rooms as a place of discussion for users.
 
 ## Setup Instructions
 
